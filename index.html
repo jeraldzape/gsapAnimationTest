@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GameTest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <style>
+       html,body{
+                padding:0;
+                margin:0;
+                height:100%;
+                width:100%;
+                position:relative;
+                overflow:hidden;
+            }
+            
+       
+            .wrapper{
+                width:100%;
+                height:100%;
+            }
+            .layout{
+                width:480px;
+                height:320px;
+                background:gray;
+                position:absolute;
+                overflow:hidden;
+            }
+        
+            
+            #road_lines{
+                position:absolute;
+                top:70%;
+                left:50%;
+            }
+            #road_lines img{
+                display:block;
+                top:0;
+                position:absolute;
+            }
+            .absolute{
+                position:absolute;
+            }
+            .topleft{
+                top:0;
+                left:0;
+            }
+            #floor{
+                bottom:0;
+                left:0;
+            }
+            .dots{
+                top:70%;
+            }
+            .dots img{
+                position:absolute;
+                left:0;
+                opacity:0.75;
+            }
+            .clouds{
+                width:100%;
+                height:50%;
+            }
+            .clouds .cloud1{
+                top:70%;
+                left:30%;
+            }
+            .clouds .cloud2{
+                top:30%;
+                left:60%;
+            }
+            .clouds .cloud3{
+                top:40%;
+                left:0;
+            }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="wrapper">
+            <div class="layout">
+
+                    <img src="assets/images/circuit.png">
+                    <!--clouds-->
+                    <div class="clouds absolute topleft">
+                        <img class="cloud1 absolute" src="assets/images/cloud.png">
+                        <img class="cloud2 absolute" src="assets/images/cloud.png">
+                        <img class="cloud3 absolute" src="assets/images/cloud.png" width="70">
+                    </div>
+                    <!--.clouds-->
+                    
+                    <!-- dots -->
+                    <div class="dots absolute">
+                        <img class="absolute" src="assets/images/road_dots.png">
+                        <img class="absolute" src="assets/images/road_dots.png">
+                        <img class="absolute" src="assets/images/road_dots.png">
+                        <img class="absolute" src="assets/images/road_dots.png">
+                        <img class="absolute" src="assets/images/road_dots.png">
+                    </div>
+                    <!--.dots-->
+                    <!-- main road -->
+                    <img id="floor" class="absolute" src="assets/images/road_floor.png">
+                    <!--.main road-->
+                    
+                    
+                    <div id="road_lines">
+                        <img src="assets/images/road_line.png">
+                        <img src="assets/images/road_line.png">
+                        <img src="assets/images/road_line.png">
+                        <img src="assets/images/road_line.png">
+                    </div>
+                    
+                    <div id="car" class="absolute">
+                        <img id="wheel" class="absolute" src="assets/images/car_wheel.png">
+                        <img id="body" class="absolute" src="assets/images/car_body.png">
+                    </div>
+                    
+                    <img class="absolute c1" src="assets/images/cactus.png">
+                    <img class="absolute c2" src="assets/images/cactus.png">
+                 
+                    
+            </div>
+        </div>
+        
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/gsap/TweenMax.min.js"></script>
+        <script>
+        
+            var layout = $('.layout'),
+                initialW = layout.width(),
+                initialH = layout.height();
+            
+            var body = $('body');
+            
+            
+            $(document).ready(init);
+            
+            function init(){
+            
+                TweenMax.set('#road_lines img',{xPercent:-50,scale:0.15,y:-5});
+                TweenMax.set('#car',{xPercent:-50,yPercent:-50,top:'90%',left:'50%'});
+                TweenMax.set('#car #body',{xPercent:-50,yPercent:-50});
+                TweenMax.set('#car #wheel',{xPercent:-50,yPercent:-50,y:20});
+                
+                /*car*/
+                TweenMax.to('#car #body',0.15,{y:2,repeat:-1,yoyo:true,ease:Linear.easeNone});
+                
+                /*cactus*/
+                TweenMax.set('.c1',{xPercent:-50,yPercent:100,top:'35%',left:'47%',scale:0.25,transformOrigin:'50% 100%'});
+                TweenMax.set('.c2',{xPercent:-50,yPercent:100,top:'35%',left:'53%',scale:0,transformOrigin:'50% 100%'});
+                
+                TweenMax.to('.c1',1,{x:-400,y:100,scale:1.75,repeat:-1,ease:Linear.easeNone});
+                TweenMax.to('.c2',1,{x:400,y:100,scale:1.75,repeat:-1,delay:0.5,ease:Linear.easeNone});
+                
+                /*clouds*/
+                TweenMax.staggerTo('.clouds img',120,{x:'200%',repeat:-1},0.25);
+                
+               TweenMax.staggerTo('#road_lines img',0.5,
+                {
+                    y:200,
+                    scale:6,
+                    repeat:-1,
+                    ease:Linear.easeNone
+                    
+                },0.25);
+                
+                /*dots*/
+                TweenMax.staggerTo('.dots img',0.75,{y:100,ease:Linear.easeNone,repeat:-1,scale:3},0.5);
+                
+                TweenMax.set('.layout',{top:'50%',left:'50%',xPercent:'-50%',yPercent:'-50%'});
+                $(window).resize(rescale);
+                rescale();
+                
+                // keyboard event
+                
+                $('body').keydown(function(e){
+                   if(e.which  == 39){
+                        // right
+                        TweenMax.to('#car',0.5,{x:100});
+                   }else if(e.which == 37){
+                       //left
+                       TweenMax.to('#car',0.5,{x:-100});
+                   }
+                });
+                
+            }
+            
+            function rescale(){
+                var scale = Math.min(
+                    body.width()/initialW,
+                    body.height()/initialH);
+                TweenMax.set(layout,{scale:scale});
+            }
+        </script>
+    </body>
+</html>

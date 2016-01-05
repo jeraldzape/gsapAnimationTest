@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GameTest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <style>
+       html,body{
+                padding:0;
+                margin:0;
+                height:100%;
+                width:100%;
+                position:relative;
+                overflow:hidden;
+                background:black;
+            }
+            
+       
+            .wrapper{
+                width:100%;
+                height:100%;
+            }
+            .layout{
+                width:480px;
+                height:320px;
+                background:gray;
+                position:absolute;
+                overflow:hidden;
+            }
+            
+            /*custom*/
+            .absolute{
+                position:absolute;
+            }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="wrapper">
+            <div class="layout">
+                <img id="circuit" class="absolute" src="assets/images/mode7/circuit_mode7.png">
+                    
+            </div>
+        </div>
+        
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/gsap/TweenMax.min.js"></script>
+        <script>
+        
+            var layout = $('.layout'),
+                initialW = layout.width(),
+                initialH = layout.height();
+            
+            var body = $('body');
+            
+            
+            $(document).ready(init);
+            
+            function init(){
+            
+                
+                TweenMax.set('#circuit',{
+                    x:50,
+                    y:50,
+                    top:'50%',
+                    left:'50%',
+                    xPercent:-50,
+                    yPercent:-50,
+                    rotationX:85,
+                    transformPerspective:300,
+                    perspective:300,
+                    transformStyle:'preserve-3d'});
+                
+                /*rescale*/
+                
+                TweenMax.set('.layout',{top:'50%',left:'50%',xPercent:'-50%',yPercent:'-50%'});
+                $(window).resize(rescale);
+                rescale();
+                
+                // keyboard
+                
+                $('body').keydown(function(e){
+                    
+                    switch(e.which){
+                        case 39: // right
+                         TweenMax.to('#circuit',0.5,{x:'+=100',ease:Linear.easeNone});
+                        break;
+                        case 37: // left
+                        TweenMax.to('#circuit',0.5,{x:'-=100',ease:Linear.easeNone});
+                        break;
+                        case 38: // up
+                        TweenMax.to('#circuit',0.5,{rotationY:'-=50',ease:Linear.easeNone});
+                        break;
+                        case 40: // down
+                        TweenMax.to('#circuit',0.5,{rotationY:'+=50',ease:Linear.easeNone});
+                        break;
+                    }
+                });
+                
+            }
+            
+            function rescale(){
+                var scale = Math.min(
+                    body.width()/initialW,
+                    body.height()/initialH);
+                TweenMax.set(layout,{scale:scale});
+            }
+        </script>
+    </body>
+</html>

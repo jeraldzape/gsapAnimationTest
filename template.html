@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GameTest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <style>
+       html,body{
+                padding:0;
+                margin:0;
+                height:100%;
+                width:100%;
+                position:relative;
+                overflow:hidden;
+            }
+            
+       
+            .wrapper{
+                width:100%;
+                height:100%;
+            }
+            .layout{
+                width:480px;
+                height:320px;
+                background:gray;
+                position:absolute;
+                overflow:hidden;
+            }
+        
+        </style>
+    </head>
+    <body>
+        
+        <div class="wrapper">
+            <div class="layout">
+                <h1>it works</h1>
+                    
+            </div>
+        </div>
+        
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/gsap/TweenMax.min.js"></script>
+        <script>
+        
+            var layout = $('.layout'),
+                initialW = layout.width(),
+                initialH = layout.height();
+            
+            var body = $('body');
+            
+            
+            $(document).ready(init);
+            
+            function init(){
+            
+                TweenMax.set('.layout',{top:'50%',left:'50%',xPercent:'-50%',yPercent:'-50%'});
+                $(window).resize(rescale);
+                rescale();
+                
+            }
+            
+            function rescale(){
+                var scale = Math.min(
+                    body.width()/initialW,
+                    body.height()/initialH);
+                TweenMax.set(layout,{scale:scale});
+            }
+        </script>
+    </body>
+</html>

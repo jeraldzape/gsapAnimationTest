@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GSAP</title>
+        <style type="text/css">
+            html,body{
+                height:100%;
+                margin:0;
+                position:relative;
+                padding:5px;
+            }
+            *{
+                box-sizing:border-box;
+            }
+            #screen1 .box{
+                background:#cbd6e8;
+                position:absolute;
+                /*width:100%;
+                height:100%;*/
+                /*transition:0.5s;*/
+                width:480px;
+                height:320px;
+            }
+            .box div{
+                position:absolute;
+            }
+            img{
+                max-width:100%;
+            }
+            img#bar{
+                position:absolute;
+                top:0;
+                right:0;
+            }
+            
+            /*@media screen and (orientation : portrait){
+                #screen1 .box{
+                    max-height:480px;
+                    max-width:320px;
+                }
+            }
+            @media screen and (orientation : landscape){
+                #screen1 .box{
+                    max-width:480px;
+                    max-height:320px;
+                }
+            }*/
+        </style>
+    </head>
+    <body>
+        
+        <!--screen1-->
+        <div id="screen1">
+            <div class="box">
+                <div class="resizable">
+                    <img src="assets/images/diagonal.png">
+                    <img src="assets/images/bar.png" id="bar">
+                </div>
+            </div>
+        </div>
+        <div id="screen2">
+            <!--<span><img src="assets/images/demo_logo_black.jpg"></span>-->
+        </div>
+        <!--.screen1-->
+        
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/gsap/TweenMax.min.js"></script>
+        <script>
+        
+            $(document).ready(init);
+            
+            var parent_container = $('#screen1');
+            
+            
+            var resizable_wrapper = $('#screen1 .box'),
+                mW = parent_container.width(),
+                mH = parent_container.height();
+            
+            function init(){
+                
+                $(window).resize(rescale);
+                
+                
+            }
+            function rescale(){
+                var scale = Math.min(resizable_wrapper.width()/mW,
+                resizable_wrapper.height()/mH);
+                console.log(scale);
+                TweenMax.set('.box',{scale:scale});
+            }
+            
+        </script>
+    </body>
+</html>
